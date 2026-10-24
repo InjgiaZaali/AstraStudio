@@ -1,0 +1,10 @@
+fn label(n) {
+    if (n < 0) { return "negative"; }
+    if (n == 0) { return "zero"; }
+    return "positive";
+}
+let x = -5;
+while (x <= 5) {
+    print(str(x) + " is " + label(x));
+    x = x + 1;
+}

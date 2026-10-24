@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0c101c">
+  <title>Astra Studio — Build something extraordinary</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell" id="app">
+    <aside class="icon-rail" aria-label="Primary navigation">
+      <div class="rail-brand" title="Astra Studio">
+        <svg viewBox="0 0 36 36" fill="none" aria-hidden="true"><circle cx="18" cy="18" r="5" fill="#8d85ff"/><ellipse cx="18" cy="18" rx="15" ry="7" transform="rotate(-40 18 18)" stroke="#74f7ce" stroke-width="2"/><circle cx="30.5" cy="9.5" r="3" fill="#74f7ce"/></svg>
+      </div>
+      <button class="rail-link selected" data-view="explorer" title="Explorer" aria-label="Explorer">
+        <svg viewBox="0 0 24 24"><path d="M4 5h7l2 2h7v12H4z"/><path d="M4 10h16"/></svg>
+      </button>
+      <button class="rail-link" data-view="guide" title="Language guide" aria-label="Language guide">
+        <svg viewBox="0 0 24 24"><path d="M5 4h13a2 2 0 0 1 2 2v14H7a3 3 0 0 1-3-3V6a2 2 0 0 1 1-2z"/><path d="M4 17a3 3 0 0 1 3-3h13M8 8h8"/></svg>
+      </button>
+      <button class="rail-link" data-view="about" title="About Astra" aria-label="About Astra">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v1"/></svg>
+      </button>
+      <div class="rail-bottom"><span class="rail-online"></span><span class="rail-vertical">LOCAL FIRST</span></div>
+    </aside>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="side-heading"><span>WORKSPACE</span><button class="icon-btn" id="collapseSidebar" title="Collapse explorer" aria-label="Collapse explorer">✕</button></div>
+      <div class="side-panel" id="panel-explorer">
+        <div class="workspace-title"><span class="folder-symbol">⌑</span> ASTRA / PLAYGROUND <span class="chevron">⌄</span></div>
+        <div class="section-label">FILES <span class="muted-small">SAMPLES</span></div>
+        <div id="fileList" class="file-list"></div>
+        <button class="new-file" id="sidebarNew"><span>＋</span> New playground file</button>
+        <div class="section-label tools-label">TOOLCHAIN</div>
+        <div class="pipeline" id="sidebarPipeline">
+          <div><span class="pipe-dot"></span><span>Lexer / Tokens</span><span class="pipe-state">READY</span></div>
+          <div><span class="pipe-dot"></span><span>Recursive parser</span><span class="pipe-state">READY</span></div>
+          <div><span class="pipe-dot"></span><span>Bytecode compiler</span><span class="pipe-state">READY</span></div>
+          <div><span class="pipe-dot"></span><span>Stack-based VM</span><span class="pipe-state">READY</span></div>
+        </div>
+        <div class="side-hero"><div class="sparkles">✦</div><div class="side-hero-label">ASTRA LANGUAGE</div><strong>Write it. Build it.<br>Make it run.</strong><p>Your own language, compiled into bytecode and executed locally by a C++ virtual machine.</p><button id="openGuide">Explore language <span>↗</span></button></div>
+      </div>
+      <div class="side-panel hidden" id="panel-guide">
+        <div class="panel-title">Language guide</div>
+        <p class="side-note">Astra is a small, typed-at-runtime scripting language built from scratch.</p>
+        <div class="reference-entry"><b>Variables</b><code>let n = 10;</code><p>Variables hold numbers, strings, booleans or null.</p></div>
+        <div class="reference-entry"><b>Functions</b><code>fn add(a, b) { return a+b; }</code><p>User functions can recurse and have scoped local variables.</p></div>
+        <div class="reference-entry"><b>Conditions</b><code>if (n > 0) { print(n); }</code><p>Use if/else, while, && and ||.</p></div>
+        <div class="reference-entry"><b>Built-ins</b><code>print(x)  len(s)  str(x)<br>sqrt(n)   assert(x)</code><p>Only these five functions are built in.</p></div>
+        <div class="reference-entry"><b>Comments</b><code>// documentation</code><p>End each statement with a semicolon.</p></div>
+        <div class="reference-entry"><b>Limitations</b><p>No arrays, imports, classes, files or networking yet. String length counts UTF-8 bytes.</p></div>
+      </div>
+      <div class="side-panel hidden" id="panel-about">
+        <div class="panel-title">About Astra Studio</div>
+        <p class="side-note">A local-first visual development environment for an experimental C++20 language and bytecode machine.</p>
+        <div class="about-card"><span>ENGINE</span><b>C++20</b></div>
+        <div class="about-card"><span>LANGUAGE</span><b>Astra 0.1</b></div>
+        <div class="about-card"><span>EXECUTION</span><b>Local VM</b></div>
+        <div class="about-card"><span>NETWORK</span><b>Loopback only</b></div>
+        <div class="about-card"><span>COMPILER</span><b>Custom</b></div>
+        <p class="side-note">The app runs on your computer. Source is sent only to the local Astra server at 127.0.0.1.</p>
+      </div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="top-menu" id="showSidebar" title="Toggle explorer" aria-label="Toggle explorer"><span></span><span></span><span></span></button>
+          <div class="breadcrumb">ASTRA <span>/</span> PLAYGROUND <span>/</span> <strong id="breadcrumbName">main.astra</strong></div>
+        </div>
+        <div class="topbar-actions">
+          <div class="desktop-hint">CUSTOM BYTECODE VM <span class="dot-sep">·</span> v0.1.0</div>
+          <button class="toolbar-button" id="newButton" title="New file">＋ <span>New</span></button>
+          <button class="toolbar-button" id="openButton" title="Open file (Ctrl+O)">↥ <span>Open</span></button>
+          <button class="toolbar-button" id="saveButton" title="Save file (Ctrl+S)">⇩ <span>Save</span></button>
+          <span class="toolbar-divider"></span>
+          <button class="analyze-button" id="analyzeButton" title="Compile without running">◇ <span>Analyze</span></button>
+          <button class="run-button" id="runButton" title="Run (Ctrl+Enter)"><svg viewBox="0 0 16 16"><path d="M5 2.5 13 8l-8 5.5z" fill="currentColor"/></svg> Run code <small>⌘↵</small></button>
+        </div>
+      </header>
+      <main class="ide-main">
+        <section class="editor-panel" aria-label="Code editor">
+          <div class="tabbar"><div class="active-tab"><span class="astra-symbol">✳</span><span id="fileTabName">main.astra</span><span class="dirty-dot" id="dirtyDot"></span></div><div class="tabbar-space"></div><span class="tab-meta">ASTRA SOURCE</span></div>
+          <div class="editor-toolbar"><div class="editor-section-title"><span class="green-dash"></span> SOURCE EDITOR <span class="lang-tag">.ASTRA</span></div><div class="editor-toolbar-right"><span class="editor-key">CTRL + ENTER TO RUN</span><button id="formatButton" title="Normalize indentation (simple formatter)">≡ Format</button></div></div>
+          <div class="editor-container" id="editorContainer">
+            <div class="line-numbers" id="lineNumbers" aria-hidden="true">1</div>
+            <div class="text-editor" id="textEditor"><pre id="highlight" aria-hidden="true"></pre><textarea id="source" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" aria-label="Astra source code" wrap="off"></textarea></div>
+          </div>
+          <div class="editor-footer"><span class="edit-status"><span class="status-led"></span><span id="compileStatus">Ready to code</span></span><span class="footer-spacer"></span><span id="cursorPos">Ln 1, Col 1</span><span id="lineCount">1 line</span><span>UTF-8</span><strong>ASTRA</strong></div>
+        </section>
+
+        <aside class="inspector" aria-label="Inspector">
+          <div class="inspector-header"><span><span class="inspector-spark">◈</span> INSPECTOR</span><span class="inspector-count" id="inspectorBadge">IDLE</span></div>
+          <div class="metrics"><div class="metric"><span>BYTECODE OPS</span><strong id="instructionMetric">—</strong></div><div class="metric"><span>FUNCTIONS</span><strong id="functionMetric">—</strong></div><div class="metric"><span>VM STEPS</span><strong id="stepMetric">—</strong></div><div class="metric"><span>BUILD TIME</span><strong id="timeMetric">—</strong></div></div>
+          <div class="inspector-tabs"><button class="inspector-tab active" data-inspector="bytecode">BYTECODE</button><button class="inspector-tab" data-inspector="help">QUICK REF</button></div>
+          <div class="inspector-body" id="bytecodePanel"><div class="placeholder-inspector"><span>⌘</span><strong>Under the hood</strong><p>Run or analyze your code to see the compiled bytecode here, instruction by instruction.</p></div><pre id="disassembly" class="disassembly hidden"></pre></div>
+          <div class="inspector-body hidden quickref" id="referencePanel"><h3>Language syntax</h3><p>Variables, functions, conditions, and loops.</p><code>let score = 42;</code><code>fn double(x) {<br>&nbsp; return x * 2;<br>}</code><code>if (score > 10) {<br>&nbsp; print(score);<br>}</code><code>while (score > 0) {<br>&nbsp; score = score - 1;<br>}</code><h3>Available built-ins</h3><p><b>print(x)</b> — write output<br><b>len(s)</b> — string bytes<br><b>str(x)</b> — convert to text<br><b>sqrt(n)</b> — square root<br><b>assert(x)</b> — check condition</p></div>
+          <div class="inspector-footer"><span class="status-led"></span> ASTRA COMPILER PIPELINE</div>
+        </aside>
+      </main>
+      <section class="console" aria-label="Program output">
+        <div class="console-top"><div class="console-title"><span class="console-mark">▰</span> OUTPUT CONSOLE <span id="consoleState" class="console-state">WAITING</span></div><div class="console-actions"><button id="copyOutput" title="Copy output">▣ Copy</button><button id="clearOutput" title="Clear console">⊘ Clear</button></div></div>
+        <div class="console-content" id="consoleContent"><div class="console-welcome"><span class="welcome-line">❯</span><div><strong>Astra runtime is ready<span class="blink">_</span></strong><p>Hit <kbd>Ctrl</kbd> + <kbd>Enter</kbd> or press Run code to execute your program.</p></div></div></div>
+        <div class="console-footer"><span>●</span> SECURE LOCAL EXECUTION <span class="console-spacer"></span><span id="lastRun">No runs yet</span></div>
+      </section>
+    </div>
+  </div>
+  <input type="file" id="fileInput" accept=".astra,.txt,text/plain" hidden>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
